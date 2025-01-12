@@ -18,6 +18,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"net/http"
 	"net/url"
 	"os"
@@ -160,6 +161,19 @@ func main() {
 		logger.Fatal("Failed to acquire db conn for migration check", zap.Error(err))
 	}
 
+	rc := redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%s", "redis", "6379"),
+		Username: "",
+		Password: "",
+		DB:       0,
+	})
+
+	status := rc.Ping(ctx)
+	if status.Err() != nil {
+		logger.Fatal("Failed to connect to redis", zap.Error(status.Err()))
+	}
+	logger.Info("Connected to redis")
+
 	if err = conn.Raw(func(driverConn any) error {
 		pgxConn := driverConn.(*stdlib.Conn).Conn()
 		migrate.Check(ctx, startupLogger, pgxConn)
@@ -196,7 +210,7 @@ func main() {
 	if err != nil {
 		logger.Fatal("Failed to initialize storage index", zap.Error(err))
 	}
-	runtime, runtimeInfo, err := server.NewRuntime(ctx, logger, startupLogger, db, jsonpbMarshaler, jsonpbUnmarshaler, config, version, socialClient, leaderboardCache, leaderboardRankCache, leaderboardScheduler, sessionRegistry, sessionCache, statusRegistry, matchRegistry, tracker, metrics, streamManager, router, storageIndex, fmCallbackHandler)
+	runtime, runtimeInfo, err := server.NewRuntime(ctx, logger, startupLogger, db, rc, jsonpbMarshaler, jsonpbUnmarshaler, config, version, socialClient, leaderboardCache, leaderboardRankCache, leaderboardScheduler, sessionRegistry, sessionCache, statusRegistry, matchRegistry, tracker, metrics, streamManager, router, storageIndex, fmCallbackHandler)
 	if err != nil {
 		startupLogger.Fatal("Failed initializing runtime modules", zap.Error(err))
 	}

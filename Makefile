@@ -3,7 +3,7 @@
 # Variables
 IMAGE_NAME = oak-roots
 COVERAGE_FILE = coverage.out
-TAG = v0.0.1
+TAG = v1-redis
 
 # Build the Docker image for service to execute
 build:

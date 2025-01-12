@@ -21,6 +21,7 @@ require (
 	github.com/klauspost/compress v1.17.11
 	github.com/prometheus/client_golang v1.20.5
 	github.com/prometheus/common v0.60.1
+	github.com/redis/go-redis/v9 v9.7.0
 	github.com/stretchr/testify v1.10.0
 	github.com/uber-go/tally/v4 v4.1.16
 	go.uber.org/atomic v1.11.0
@@ -52,6 +53,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-metro v0.0.0-20211217172704-adc40b04c140 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
@@ -75,3 +77,5 @@ require (
 	golang.org/x/text v0.20.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241118233622-e639e219e697 // indirect
 )
+
+replace github.com/heroiclabs/nakama-common v1.35.0 => github.com/marispz/nakama-common v1.0.0
